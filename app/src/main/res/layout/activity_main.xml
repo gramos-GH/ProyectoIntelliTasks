@@ -5,74 +5,123 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--Parte superior azul claro-->
+    <!--Sección superior: fondo azul con ícono y textos-->
     <LinearLayout
         android:id="@+id/upperSection"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/skyBlue"
         android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/deepBlue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/lowerSection"
-        app:layout_constraintHeight_percent="0.5" >
+        app:layout_constraintHeight_percent="0.45">
+
+        <!--ImageView del ícono-->
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="16dp"
+            app:srcCompat="@drawable/loginicon" />
+
+        <!--TextView "Bienvenida"-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡Bienvenido!"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/pearlWhite" />
+
+        <!--TextView "Inicio de sesión"-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Inicia sesión para continuar"
+            android:textSize="16sp"
+            android:textColor="@color/pearlWhite" />
     </LinearLayout>
 
-    <!--Parte inferior blanca-->
+    <!--Sección inferior: fondo blanco con inputs y botones-->
     <LinearLayout
         android:id="@+id/lowerSection"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/pearlWhite"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/upperSection"
+        android:padding="16dp"
+        android:background="@color/pearlWhite"
+        app:layout_constraintTop_toBottomOf="@id/upperSection"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.5" />
+        app:layout_constraintHeight_percent="0.55">
 
-    <!--Texto de "Bienvenido"-->
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="¡Bienvenido!"
-        android:fontFamily="sans-serif"
-        android:textColor="@color/pearlWhite"
-        android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/upperSection"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"/>
+        <!--Campo de correo-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Correo:" />
 
-    <!--Texto de "Inicia sesión para continuar"-->
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="100dp"
-        android:fontFamily="sans-serif"
-        android:text="Inicia sesión para continuar"
-        android:textColor="@color/pearlWhite"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/upperSection"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Correo"
+            android:inputType="textEmailAddress" />
 
-    <Button
-        android:id="@+id/supabutton"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:fontFamily="sans-serif"
-        android:text="Ingresar"
-        android:textSize="14sp"
-        android:background="@drawable/button_background"
-        app:layout_constraintTop_toBottomOf="@id/textView1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="16dp" />
+        <!--Campo de contraseña-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contraseña:" />
 
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Contraseña"
+            android:inputType="textPassword" />
+
+        <!--Botón de continuar-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/blueButton"
+            android:text="Continuar"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:cornerRadius="16dp" />
+
+        <!--Enlaces: Registrarse y Restablecer contraseña-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/registerText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Registrarse"
+                android:textColor="@color/blueButton"
+                android:gravity="start" />
+
+            <TextView
+                android:id="@+id/resetPasswordText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Restablecer contraseña"
+                android:textColor="@color/blueButton"
+                android:gravity="end" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
