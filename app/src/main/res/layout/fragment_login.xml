@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Layout principal de la actividad-->
+<!--Use un ConstraintLayout-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
@@ -98,6 +100,7 @@
             android:inputType="textPassword" />
 
         <!--Botón de continuar-->
+        <!--Usé uno de los botones del Material Design-->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnContinue"
             android:layout_width="match_parent"

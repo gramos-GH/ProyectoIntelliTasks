@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Layout principal de la actividad-->
+<!--Use un ConstraintLayout-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,10 +9,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--FragmentContainerView que aloja los fragmentos de la navegación-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true"/>
+
+    <!--Lottie Animation View que muestra una animación mientras se carga la aplicación-->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/view"
         android:layout_width="128dp"
         android:layout_height="128dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,4 +31,5 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loader_animation"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
