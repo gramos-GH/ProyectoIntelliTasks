@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "786103424119",
+    "project_id": "intellitasks-85af7",
+    "storage_bucket": "intellitasks-85af7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786103424119:android:77ed30c470d6a0f3b7e272",
+        "android_client_info": {
+          "package_name": "com.example.intellitasks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1MHzkZLAIOJJyEkIiYot13ze4MUbJxpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
