@@ -57,8 +57,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 Toast.makeText(context, "¡Registro exitoso! Por favor, inicia sesión.", Toast.LENGTH_SHORT).show()
                 // NAVEGACIÓN CORRECTA Y ÚNICA DESPUÉS DE REGISTRO EXITOSO
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                // Si estás usando Safe Args, sería:
-                // findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
             }
         }
 

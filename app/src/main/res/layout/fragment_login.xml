@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/carbonBlack"
             android:text="Correo:" />
 
         <EditText
@@ -78,6 +79,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:textColor="@color/carbonBlack"
             android:hint="Correo"
             android:inputType="textEmailAddress" />
 
@@ -87,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/carbonBlack"
             android:text="Contraseña:" />
 
         <EditText
@@ -97,6 +100,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:hint="Contraseña"
+            android:textColor="@color/carbonBlack"
             android:inputType="textPassword" />
 
         <!--Botón de continuar-->

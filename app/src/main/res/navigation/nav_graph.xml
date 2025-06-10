@@ -10,22 +10,21 @@
         android:name="com.example.intellitasks.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
-
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/splashFragment"         app:popUpToInclusive="true" />           </fragment>
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.intellitasks.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
-
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
-
     </fragment>
 
     <fragment
@@ -33,10 +32,11 @@
         android:name="com.example.intellitasks.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
-
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"         app:popUpToInclusive="false" />         </fragment>
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 
 </navigation>

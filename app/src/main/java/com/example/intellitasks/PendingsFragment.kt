@@ -4,22 +4,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView // Asegúrate de importar TextView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.Fragment // Asegúrate de que este import esté
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-// *** CAMBIO AQUÍ: Renombra la clase a PendingsFragment ***
 class PendingsFragment : Fragment(R.layout.fragment_pendings) {
 
     private lateinit var menuIcon: ImageView
     private lateinit var addIcon: ImageView
-    private lateinit var titleTextView: TextView // Referencia al título "Pendientes"
+    private lateinit var titleTextView: TextView
     private lateinit var recyclerViewPendientes: RecyclerView
 
-    // Aquí necesitarás una lista de datos y un adaptador para tu RecyclerView
-    private lateinit var pendingsAdapter: PendingsAdapter // Tendremos que crear esta clase
+    private lateinit var pendingsAdapter: PendingsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,23 +30,23 @@ class PendingsFragment : Fragment(R.layout.fragment_pendings) {
 
         // 2. Configurar ClickListeners
         menuIcon.setOnClickListener {
-            Log.d("PendingsFragment", "Icono de menú presionado") // Log actualizado
+            Log.d("PendingsFragment", "Icono de menú presionado")
             Toast.makeText(context, "Menú presionado (ej. abrir Drawer)", Toast.LENGTH_SHORT).show()
-            // Aquí podrías abrir un DrawerLayout si tu Activity lo tiene
         }
 
         addIcon.setOnClickListener {
-            Log.d("PendingsFragment", "Icono de añadir presionado") // Log actualizado
-            Toast.makeText(context, "Añadir nueva tarea (navegar a AddTaskFragment)", Toast.LENGTH_SHORT).show()
-            // Aquí navegarías a un fragmento para añadir una nueva tarea
-            // findNavController().navigate(R.id.action_pendingsFragment_to_addTaskFragment) // Si usas NavComponent
+            Log.d("PendingsFragment", "Icono de añadir presionado. Navegando a AddTaskFragment.")
+            Toast.makeText(context, "Añadir nueva tarea (cargando AddTaskFragment)", Toast.LENGTH_SHORT).show()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_fragment_container, AddTaskFragment()) // Asegúrate que main_fragment_container sea el ID correcto en activity_list.xml
+                .addToBackStack(null) // Esto permite al usuario volver a PendingsFragment con el botón de atrás
+                .commit()
         }
 
         // 3. Configurar el RecyclerView
         recyclerViewPendientes.layoutManager = LinearLayoutManager(context)
 
-        // *** AQUI NECESITARÁS TU ADAPTER REAL Y TUS DATOS ***
-        // Por ahora, creamos unos datos de prueba para que el RecyclerView se vea.
         val dummyTaskList = listOf(
             "Comprar víveres",
             "Preparar presentación",

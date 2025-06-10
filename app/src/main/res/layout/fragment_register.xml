@@ -78,6 +78,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/carbonBlack"
             android:text="Nombre:" />
 
         <EditText
@@ -88,6 +89,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Nombre"
+            android:textColor="@color/carbonBlack"
             android:inputType="textEmailAddress" />
 
 
@@ -97,6 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/carbonBlack"
             android:text="Correo:" />
 
         <EditText
@@ -107,6 +110,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Correo"
+            android:textColor="@color/carbonBlack"
             android:inputType="textEmailAddress" />
 
         <!--Campo de contraseña-->
@@ -115,6 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/carbonBlack"
             android:text="Contraseña:" />
 
         <EditText
@@ -125,6 +130,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Contraseña"
+            android:textColor="@color/carbonBlack"
             android:inputType="textPassword" />
 
         <!--Botón de continuar-->
