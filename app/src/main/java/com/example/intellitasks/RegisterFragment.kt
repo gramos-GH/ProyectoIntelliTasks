@@ -26,12 +26,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         // Inicializa el ViewModel
         registerViewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
 
-        // Asegúrate de que la actividad anfitriona implementa FragmentCommunicator
         if (activity is FragmentCommunicator) {
             communicator = activity as FragmentCommunicator
         } else {
-            // Esto debería lanzar un error si la actividad no implementa la interfaz,
-            // lo que es bueno para detectar problemas en tiempo de desarrollo.
             throw RuntimeException("$context must implement FragmentCommunicator")
         }
     }

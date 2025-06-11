@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 
-class LoginFragment : Fragment(R.layout.fragment_login) { // Asegúrate que tu layout se llama fragment_login
+class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private lateinit var loginViewModel: LoginViewModel
 
@@ -27,7 +27,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) { // Asegúrate que tu l
 
         val emailEditText = view.findViewById<EditText>(R.id.emailEditText)
         val passwordEditText = view.findViewById<EditText>(R.id.passwordEditText)
-        val btnLogin = view.findViewById<Button>(R.id.btnContinue) // Asumiendo que el ID en login es btnLogin
+        val btnLogin = view.findViewById<Button>(R.id.btnContinue)
         val registerTextView = view.findViewById<TextView>(R.id.registerText)
 
         // Observar eventos de login exitoso/fallido desde el ViewModel
@@ -83,7 +83,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) { // Asegúrate que tu l
         registerTextView.setOnClickListener {
             // Requisito: "Si un registro resulta exitoso se deberá mover al usuario a la pantalla de login." -> Esto es la acción de registro (en RegisterFragment se maneja el retorno)
             // Aquí se maneja la navegación desde Login a Register
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment) // Asegúrate que el ID de la acción es correcto
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
     }
 }
