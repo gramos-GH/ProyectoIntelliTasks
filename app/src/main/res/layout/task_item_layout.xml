@@ -16,6 +16,18 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!-- Botón de actualizar -->
+        <ImageButton
+            android:id="@+id/btnRefreshTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_popup_sync"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Actualizar tarea"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Nombre de la tarea -->
         <TextView
             android:id="@+id/tvTaskName"
             android:layout_width="0dp"
@@ -25,10 +37,11 @@
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toStartOf="@+id/tvTaskDate"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRefreshTask"
             app:layout_constraintHorizontal_weight="1"
             tools:text="Comprar víveres para la cena" />
 
+        <!-- Fecha de la tarea -->
         <TextView
             android:id="@+id/tvTaskDate"
             android:layout_width="wrap_content"
@@ -36,9 +49,10 @@
             android:textSize="14sp"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRefreshTask"
             tools:text="10/06/2025" />
 
+        <!-- Descripción de la tarea -->
         <TextView
             android:id="@+id/tvTaskDescription"
             android:layout_width="0dp"
@@ -51,6 +65,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvTaskName"
             tools:text="Necesito comprar frutas, verduras, leche y pan integral para la cena de hoy." />
 
+        <!-- Checkbox -->
         <CheckBox
             android:id="@+id/taskCheckBox"
             android:layout_width="wrap_content"
@@ -61,8 +76,20 @@
             android:layout_marginTop="8dp"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:visibility="gone" tools:visibility="visible"
-            />
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <!-- Botón de eliminar -->
+        <ImageButton
+            android:id="@+id/btnDeleteTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Eliminar tarea"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/taskCheckBox"
+            android:layout_marginTop="8dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

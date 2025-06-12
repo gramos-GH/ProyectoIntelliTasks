@@ -5,54 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".PendingsFragment"> <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/headerContainer"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:background="@android:color/white"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
+    tools:context=".PendingsFragment">
 
-    <ImageView
-        android:id="@+id/menuIcon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:contentDescription="Menu"
-        android:src="@drawable/menu" app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
+    <!-- Header -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pendientes"
-        android:textColor="@color/deepBlue" android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/addIcon"
-        app:layout_constraintStart_toEndOf="@id/menuIcon"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <ImageView
-        android:id="@+id/addIcon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        android:contentDescription="Add new item"
-        android:focusable="true"
-        android:src="@drawable/agregar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/menuIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:contentDescription="Menu"
+            android:src="@drawable/menu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pendientes"
+            android:textColor="@color/deepBlue"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/addIcon"
+            app:layout_constraintStart_toEndOf="@id/menuIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" />
 
+        <ImageView
+            android:id="@+id/addIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:contentDescription="Add new item"
+            android:focusable="true"
+            android:src="@drawable/agregar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Divider -->
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
@@ -62,6 +68,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- RecyclerView de tareas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPendientes"
         android:layout_width="0dp"
@@ -74,4 +81,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_pendiente" /> </androidx.constraintlayout.widget.ConstraintLayout>
+        tools:listitem="@layout/item_pendiente" />
+
+    <!-- Vista vacía si no hay tareas -->
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:contentDescription="Sin tareas" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No tienes tareas pendientes"
+            android:textSize="18sp"
+            android:textColor="@android:color/darker_gray"
+            android:paddingTop="16dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

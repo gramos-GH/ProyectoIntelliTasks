@@ -15,12 +15,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
-class PendingsFragment : Fragment() {
+class PendingsFragment : Fragment(), TaskActionListener {
 
     private lateinit var menuIcon: ImageView
     private lateinit var addIcon: ImageView
     private lateinit var titleTextView: TextView
     private lateinit var recyclerViewPendientes: RecyclerView
+    private lateinit var emptyView: View
 
     private lateinit var pendingsAdapter: PendingsAdapter
     private lateinit var db: FirebaseFirestore
@@ -46,6 +47,7 @@ class PendingsFragment : Fragment() {
         addIcon = view.findViewById(R.id.addIcon)
         titleTextView = view.findViewById(R.id.titleTextView)
         recyclerViewPendientes = view.findViewById(R.id.recyclerViewPendientes)
+        emptyView = view.findViewById(R.id.emptyView) // Esta es la vista que se muestra cuando no hay tareas
 
         menuIcon.setOnClickListener {
             Log.d("PendingsFragment", "Icono de menú presionado")
@@ -53,8 +55,8 @@ class PendingsFragment : Fragment() {
         }
 
         addIcon.setOnClickListener {
-            Log.d("PendingsFragment", "Icono de añadir presionado. Navegando a AddTaskFragment.")
-            showToast("Añadir nueva tarea (cargando AddTaskFragment)")
+            Log.d("PendingsFragment", "Añadir nueva tarea")
+            showToast("Añadir nueva tarea")
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.main_fragment_container, AddTaskFragment())
@@ -63,7 +65,11 @@ class PendingsFragment : Fragment() {
         }
 
         recyclerViewPendientes.layoutManager = LinearLayoutManager(context)
-        pendingsAdapter = PendingsAdapter(emptyList())
+
+        val currentUser = varAuth.currentUser
+        val userId = currentUser?.uid ?: ""
+
+        pendingsAdapter = PendingsAdapter(mutableListOf(), requireContext(), userId, this)
         recyclerViewPendientes.adapter = pendingsAdapter
 
         loadTasksFromFirestore()
@@ -82,25 +88,35 @@ class PendingsFragment : Fragment() {
                     val taskList = mutableListOf<Task>()
                     for (document in querySnapshot) {
                         val task = document.toObject(Task::class.java)
+                        task.id = document.id
                         taskList.add(task)
                     }
                     pendingsAdapter.updateTaskList(taskList)
-                    Log.d("PendingsFragment", "Tareas cargadas: ${taskList.size}")
-                    if (taskList.isEmpty()) {
-                        showToast("No hay tareas pendientes.")
-                    }
+                    updateEmptyView(taskList.isEmpty())
                 }
                 .addOnFailureListener { e ->
-                    Log.e("PendingsFragment", "Error al cargar tareas de Firestore", e)
+                    Log.e("PendingsFragment", "Error al cargar tareas", e)
                     showToast("Error al cargar tareas.")
                 }
         } else {
-            Log.w("PendingsFragment", "No hay usuario autenticado. No se pueden cargar las tareas.")
-            showToast("No hay usuario autenticado. Por favor, inicia sesión.")
+            Log.w("PendingsFragment", "Usuario no autenticado")
+            showToast("Inicia sesión para ver tus tareas.")
         }
     }
 
-    // ✅ Función segura para mostrar Toasts
+    private fun updateEmptyView(isEmpty: Boolean) {
+        emptyView.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        recyclerViewPendientes.visibility = if (isEmpty) View.GONE else View.VISIBLE
+    }
+
+    override fun onTaskDeleted() {
+        loadTasksFromFirestore()
+    }
+
+    override fun onTaskUpdated() {
+        loadTasksFromFirestore()
+    }
+
     private fun showToast(message: String) {
         context?.let {
             Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
