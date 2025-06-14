@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
-            android:text="Registrate para continuar"
+            android:text="Registrate para continuar a la app"
             android:textSize="16sp"
             android:textColor="@color/pearlWhite" />
     </LinearLayout>

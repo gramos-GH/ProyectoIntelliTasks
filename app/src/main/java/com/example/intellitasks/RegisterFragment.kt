@@ -13,17 +13,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 
+/*Clase RegisterFragment*/
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
-    // Se declara el ViewModel para el registro
+    /*Se declara el ViewModel para el registro*/
     private lateinit var registerViewModel: RegisterViewModel
 
-    // Se declara una variable para el comunicador.
+    /*Se declara una variable para el comunicador.*/
     private var communicator: FragmentCommunicator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Inicializa el ViewModel
+        /*Se inicializa el ViewModel*/
         registerViewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
 
         if (activity is FragmentCommunicator) {
@@ -36,23 +37,22 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Obtener referencias a los EditText
+        /*Se obtienen referencias a los EditText*/
         val nameEditText = view.findViewById<EditText>(R.id.nameEditText)
         val emailEditText = view.findViewById<EditText>(R.id.emailEditText)
         val passwordEditText = view.findViewById<EditText>(R.id.passwordEditText)
 
-        // Se obtiene el botón de registro
+        /*Se obtiene el botón de registro*/
         val btnRegister = view.findViewById<Button>(R.id.btnContinue) // Confirmado el ID btnContinue
 
-        //Se obtiene el ícono de regreso
+        /*Se obtiene el ícono de regreso*/
         val backButton = view.findViewById<ImageView>(R.id.btnBack)
 
-        // --- Observadores de LiveData del ViewModel ---
+        /*Observers de LiveData del ViewModel*/
         registerViewModel.registrationResult.observe(viewLifecycleOwner) { isSuccess ->
             if (isSuccess) {
-                // Requisito: "Si un registro resulta exitoso se deberá mover al usuario a la pantalla de login."
+                /*Requisito: "Si un registro resulta exitoso se deberá mover al usuario a la pantalla de login."*/
                 Toast.makeText(context, "¡Registro exitoso! Por favor, inicia sesión.", Toast.LENGTH_SHORT).show()
-                // NAVEGACIÓN CORRECTA Y ÚNICA DESPUÉS DE REGISTRO EXITOSO
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             }
         }
@@ -63,24 +63,24 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
         }
 
-        // Requisito: "Declarar los observers en cada vista" para el loader
+        /*Requisito: "Declarar los observers en cada vista" para el loader*/
         registerViewModel.showLoader.observe(viewLifecycleOwner) { show ->
             if (show) {
                 Log.d("RegisterFragment", "Mostrando loader...")
-                communicator?.showLoader() // Llama al comunicador para mostrar el loader
+                communicator?.showLoader() /*Llama al comunicador para mostrar el loader*/
             } else {
                 Log.d("RegisterFragment", "Ocultando loader...")
-                communicator?.hideLoader() // Llama al comunicador para ocultar el loader
+                communicator?.hideLoader() /*Llama al comunicador para ocultar el loader*/
             }
         }
 
-        // --- Click Listener para el botón de registro ---
+        /*Click Listener para el botón de registro*/
         btnRegister.setOnClickListener {
             val name = nameEditText.text.toString().trim()
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
-            // Requisito: "validación de campos a sus pantallas para que no me deje iniciar un proceso si cualquiera de los campos está vacío"
+            /*Requisito: "validación de campos a sus pantallas para que no me deje iniciar un proceso si cualquiera de los campos está vacío"*/
             if (name.isEmpty()) {
                 nameEditText.error = "El nombre no puede estar vacío"
                 nameEditText.requestFocus()
@@ -97,13 +97,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 return@setOnClickListener
             }
 
-            // Llamar al ViewModel para manejar el registro de usuario
+            /*Llamar al ViewModel para manejar el registro de usuario*/
             registerViewModel.registerUser(email, password)
         }
 
-        // --- Click Listener para el botón de regreso ---
+        /*Click Listener para el botón de regreso*/
         backButton.setOnClickListener {
-            // Se navega de regreso a la pantalla anterior en la pila de navegación
+            /*Se navega de regreso a la pantalla anterior en la pila de navegación*/
             findNavController().navigateUp()
         }
     }

@@ -1,5 +1,7 @@
+/*Paquetes*/
 package com.example.intellitasks
 
+/*Imports*/
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +17,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
-class PendingsFragment : Fragment(), TaskActionListener {
+/*Clase PendingsFragment*/
+class PendingsFragment : Fragment(), FragmentCommunicator, TaskActionListener {
 
     private lateinit var menuIcon: ImageView
     private lateinit var addIcon: ImageView
@@ -47,7 +50,7 @@ class PendingsFragment : Fragment(), TaskActionListener {
         addIcon = view.findViewById(R.id.addIcon)
         titleTextView = view.findViewById(R.id.titleTextView)
         recyclerViewPendientes = view.findViewById(R.id.recyclerViewPendientes)
-        emptyView = view.findViewById(R.id.emptyView) // Esta es la vista que se muestra cuando no hay tareas
+        emptyView = view.findViewById(R.id.emptyView)
 
         menuIcon.setOnClickListener {
             Log.d("PendingsFragment", "Icono de menú presionado")
@@ -69,7 +72,8 @@ class PendingsFragment : Fragment(), TaskActionListener {
         val currentUser = varAuth.currentUser
         val userId = currentUser?.uid ?: ""
 
-        pendingsAdapter = PendingsAdapter(mutableListOf(), requireContext(), userId, this)
+        // Aquí pasamos 'this' tanto para TaskActionListener como FragmentCommunicator
+        pendingsAdapter = PendingsAdapter(mutableListOf(), requireContext(), userId, this, this)
         recyclerViewPendientes.adapter = pendingsAdapter
 
         loadTasksFromFirestore()
@@ -109,17 +113,46 @@ class PendingsFragment : Fragment(), TaskActionListener {
         recyclerViewPendientes.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
 
-    override fun onTaskDeleted() {
-        loadTasksFromFirestore()
-    }
 
-    override fun onTaskUpdated() {
-        loadTasksFromFirestore()
-    }
 
     private fun showToast(message: String) {
         context?.let {
             Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    /*Se implementa openUpdateTaskFragment para FragmentCommunicator*/
+    override fun openUpdateTaskFragment(task: Task, userId: String) {
+        val updateFragment = UpdateTaskFragment()
+        val bundle = Bundle().apply {
+            putString("name", task.name)
+            putString("description", task.description)
+            putString("date", task.date)
+            putString("userId", userId)
+            putString("taskId", task.id)
+        }
+        updateFragment.arguments = bundle
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_fragment_container, updateFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun showLoader() {
+        /*En caso de querer mostrar el loader, aquí se implementaría*/
+    }
+
+    override fun hideLoader() {
+        /*En caso de querer ocultar el loader, aquí se implementaría*/
+    }
+    override fun onTaskDeleted() {
+        /*Recargar las tareas o mostrar un mensaje si se desea*/
+        loadTasksFromFirestore()
+    }
+
+    override fun onTaskUpdated() {
+        /*Recargar tareas o mostrar un mensaje si es necesario*/
+        loadTasksFromFirestore()
     }
 }

@@ -1,5 +1,7 @@
+/*Paquetes*/
 package com.example.intellitasks
 
+/*Imports*/
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -8,26 +10,15 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.intellitasks.Task
 
-data class Task(
-    var id: String = "",
-    val name: String = "",
-    val description: String = "",
-    val date: String = "",
-    val isCompleted: Boolean = false,
-    val createdAt: com.google.firebase.Timestamp? = null
-)
-
-interface TaskActionListener {
-    fun onTaskDeleted()
-    fun onTaskUpdated()
-}
-
+/*Clase PendingsAdapter*/
 class PendingsAdapter(
-    private var taskList: MutableList<Task>,
+    private var taskList: MutableList<Task>,  /*Se utiliza el modelo Task*/
     private val context: Context,
     private val userId: String,
-    private val listener: TaskActionListener  // ✅ Necesario para comunicar con el fragmento
+    private val taskListener: TaskActionListener,
+    private val communicator: FragmentCommunicator
 ) : RecyclerView.Adapter<PendingsAdapter.TaskViewHolder>() {
 
     private val db = FirebaseFirestore.getInstance()
@@ -38,7 +29,7 @@ class PendingsAdapter(
         val taskDateTextView: TextView = itemView.findViewById(R.id.tvTaskDate)
         val taskCheckBox: CheckBox = itemView.findViewById(R.id.taskCheckBox)
         val btnDeleteTask: ImageButton = itemView.findViewById(R.id.btnDeleteTask)
-        val btnRefreshTask: ImageButton = itemView.findViewById(R.id.btnRefreshTask)
+        val btnEditTask: ImageButton = itemView.findViewById(R.id.btnEditTask)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -56,12 +47,12 @@ class PendingsAdapter(
 
         holder.taskCheckBox.setOnCheckedChangeListener(null)
         holder.taskCheckBox.isChecked = currentTask.isCompleted
+
         holder.taskCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            val taskId = currentTask.id
-            if (taskId.isNotEmpty()) {
+            if (currentTask.id.isNotEmpty()) {
                 db.collection("users").document(userId)
                     .collection("tasks")
-                    .document(taskId)
+                    .document(currentTask.id)
                     .update("isCompleted", isChecked)
             }
         }
@@ -71,22 +62,14 @@ class PendingsAdapter(
                 .setTitle("Eliminar tarea")
                 .setMessage("¿Quieres eliminar '${currentTask.name}'?")
                 .setPositiveButton("Sí") { _, _ ->
-                    deleteTask(holder.adapterPosition)
+                    deleteTask(position)
                 }
                 .setNegativeButton("Cancelar", null)
                 .show()
         }
 
-        holder.btnRefreshTask.setOnClickListener {
-            refreshTaskData(currentTask.id, position)
-        }
-
-        holder.itemView.setOnClickListener {
-            Toast.makeText(
-                holder.itemView.context,
-                "Clic en: ${currentTask.name}",
-                Toast.LENGTH_SHORT
-            ).show()
+        holder.btnEditTask.setOnClickListener {
+            communicator.openUpdateTaskFragment(currentTask, userId)
         }
     }
 
@@ -97,30 +80,21 @@ class PendingsAdapter(
         notifyDataSetChanged()
     }
 
-    fun deleteTask(position: Int) {
+    private fun deleteTask(position: Int) {
         val task = taskList[position]
         if (task.id.isNotEmpty()) {
-            db.collection("users")
-                .document(userId)
+            db.collection("users").document(userId)
                 .collection("tasks")
                 .document(task.id)
                 .delete()
                 .addOnSuccessListener {
                     taskList.removeAt(position)
                     notifyItemRemoved(position)
-                    Toast.makeText(
-                        context,
-                        "Tarea eliminada",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    listener.onTaskDeleted()  // ✅ Notifica al fragmento
+                    Toast.makeText(context, "Tarea eliminada", Toast.LENGTH_SHORT).show()
+                    taskListener.onTaskDeleted()
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(
-                        context,
-                        "Error al eliminar: ${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(context, "Error al eliminar: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }
@@ -128,8 +102,7 @@ class PendingsAdapter(
     private fun refreshTaskData(taskId: String, position: Int) {
         if (taskId.isEmpty()) return
 
-        db.collection("users")
-            .document(userId)
+        db.collection("users").document(userId)
             .collection("tasks")
             .document(taskId)
             .get()
@@ -140,7 +113,7 @@ class PendingsAdapter(
                         taskList[position] = updatedTask
                         notifyItemChanged(position)
                         Toast.makeText(context, "Tarea actualizada", Toast.LENGTH_SHORT).show()
-                        listener.onTaskUpdated()  // ✅ Notifica al fragmento
+                        taskListener.onTaskUpdated()
                     }
                 } else {
                     Toast.makeText(context, "No se encontró la tarea", Toast.LENGTH_SHORT).show()
