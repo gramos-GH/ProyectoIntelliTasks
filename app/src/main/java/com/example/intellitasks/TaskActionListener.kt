@@ -5,4 +5,5 @@ package com.example.intellitasks
 interface TaskActionListener {
     fun onTaskDeleted()
     fun onTaskUpdated()
+    fun onTaskClicked(task: Task)
 }

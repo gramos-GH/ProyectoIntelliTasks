@@ -21,7 +21,7 @@
             android:id="@+id/btnEditTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_popup_sync"
+            android:src="@drawable/actualizar"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Actualizar tarea"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toStartOf="@+id/tvTaskDate"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRefreshTask"
+            app:layout_constraintTop_toBottomOf="@+id/btnEditTask"
             app:layout_constraintHorizontal_weight="1"
             tools:text="Comprar víveres para la cena" />
 
@@ -46,10 +46,10 @@
             android:id="@+id/tvTaskDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:textColor="?android:attr/textColorSecondary"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRefreshTask"
+            app:layout_constraintTop_toBottomOf="@+id/btnEditTask"
             tools:text="10/06/2025" />
 
         <!-- Descripción de la tarea -->
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTaskName"
@@ -84,12 +84,12 @@
             android:id="@+id/btnDeleteTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_delete"
+            android:layout_marginTop="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Eliminar tarea"
+            android:src="@drawable/eliminar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskCheckBox"
-            android:layout_marginTop="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/taskCheckBox" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ class PendingsFragment : Fragment(), FragmentCommunicator, TaskActionListener {
     private lateinit var titleTextView: TextView
     private lateinit var recyclerViewPendientes: RecyclerView
     private lateinit var emptyView: View
+    private lateinit var progressBar: ProgressBar
 
     private lateinit var pendingsAdapter: PendingsAdapter
     private lateinit var db: FirebaseFirestore
@@ -51,6 +53,7 @@ class PendingsFragment : Fragment(), FragmentCommunicator, TaskActionListener {
         titleTextView = view.findViewById(R.id.titleTextView)
         recyclerViewPendientes = view.findViewById(R.id.recyclerViewPendientes)
         emptyView = view.findViewById(R.id.emptyView)
+        progressBar = view.findViewById(R.id.progressBar)
 
         menuIcon.setOnClickListener {
             Log.d("PendingsFragment", "Icono de menú presionado")
@@ -72,7 +75,7 @@ class PendingsFragment : Fragment(), FragmentCommunicator, TaskActionListener {
         val currentUser = varAuth.currentUser
         val userId = currentUser?.uid ?: ""
 
-        // Aquí pasamos 'this' tanto para TaskActionListener como FragmentCommunicator
+        // Pasamos 'this' tanto para TaskActionListener como FragmentCommunicator
         pendingsAdapter = PendingsAdapter(mutableListOf(), requireContext(), userId, this, this)
         recyclerViewPendientes.adapter = pendingsAdapter
 
@@ -80,6 +83,8 @@ class PendingsFragment : Fragment(), FragmentCommunicator, TaskActionListener {
     }
 
     private fun loadTasksFromFirestore() {
+        showLoader()
+
         val currentUser = varAuth.currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
@@ -97,14 +102,17 @@ class PendingsFragment : Fragment(), FragmentCommunicator, TaskActionListener {
                     }
                     pendingsAdapter.updateTaskList(taskList)
                     updateEmptyView(taskList.isEmpty())
+                    hideLoader()
                 }
                 .addOnFailureListener { e ->
                     Log.e("PendingsFragment", "Error al cargar tareas", e)
                     showToast("Error al cargar tareas.")
+                    hideLoader()
                 }
         } else {
             Log.w("PendingsFragment", "Usuario no autenticado")
             showToast("Inicia sesión para ver tus tareas.")
+            hideLoader()
         }
     }
 
@@ -113,15 +121,13 @@ class PendingsFragment : Fragment(), FragmentCommunicator, TaskActionListener {
         recyclerViewPendientes.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
 
-
-
     private fun showToast(message: String) {
         context?.let {
             Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
         }
     }
 
-    /*Se implementa openUpdateTaskFragment para FragmentCommunicator*/
+    /*Metodo para abrir UpdateTaskFragment*/
     override fun openUpdateTaskFragment(task: Task, userId: String) {
         val updateFragment = UpdateTaskFragment()
         val bundle = Bundle().apply {
@@ -140,19 +146,35 @@ class PendingsFragment : Fragment(), FragmentCommunicator, TaskActionListener {
     }
 
     override fun showLoader() {
-        /*En caso de querer mostrar el loader, aquí se implementaría*/
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun hideLoader() {
-        /*En caso de querer ocultar el loader, aquí se implementaría*/
+        progressBar.visibility = View.GONE
     }
+
     override fun onTaskDeleted() {
-        /*Recargar las tareas o mostrar un mensaje si se desea*/
         loadTasksFromFirestore()
     }
 
     override fun onTaskUpdated() {
-        /*Recargar tareas o mostrar un mensaje si es necesario*/
         loadTasksFromFirestore()
+    }
+
+    /*Navegar a TaskDetailFragment al hacer click en tarea*/
+    override fun onTaskClicked(task: Task) {
+        val bundle = Bundle().apply {
+            putString("name", task.name)
+            putString("description", task.description)
+            putString("date", task.date)
+        }
+
+        val taskDetailFragment = TaskDetailFragment()
+        taskDetailFragment.arguments = bundle
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_fragment_container, taskDetailFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

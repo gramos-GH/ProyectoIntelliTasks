@@ -25,7 +25,7 @@ class AddTaskFragment : Fragment() {
 
     /*Variable para el ViewBinding*/
     private var _binding: FragmentAddTaskBinding? = null
-    // Esta propiedad solo es válida entre onCreateView y onDestroyView.
+    /*Esta propiedad solo es válida entre onCreateView y onDestroyView.*/
     private val binding get() = _binding!!
 
     /*Adición de Instancias de Firestore y Auth*/

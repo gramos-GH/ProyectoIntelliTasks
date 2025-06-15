@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
     </fragment>
 
     <fragment
@@ -38,5 +41,30 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="false" />
     </fragment>
+
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.example.intellitasks.TaskDetailFragment"
+        android:label="Detalle de tarea"
+        tools:layout="@layout/fragment_task_detail" />
+
+    <!-- Agrega UpdateTaskFragment -->
+    <fragment
+        android:id="@+id/updateTaskFragment"
+        android:name="com.example.intellitasks.UpdateTaskFragment"
+        android:label="Actualizar tarea"
+        tools:layout="@layout/fragment_update_task">
+
+        <action
+            android:id="@+id/action_updateTaskFragment_to_pendingsFragment"
+            app:destination="@id/pendingsFragment" />
+    </fragment>
+
+    <!-- Agrega PendingsFragment -->
+    <fragment
+        android:id="@+id/pendingsFragment"
+        android:name="com.example.intellitasks.PendingsFragment"
+        android:label="Pendientes"
+        tools:layout="@layout/fragment_pendings" />
 
 </navigation>

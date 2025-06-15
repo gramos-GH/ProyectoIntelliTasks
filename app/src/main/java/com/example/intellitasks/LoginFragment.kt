@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -48,7 +49,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         /*Observar errores desde el ViewModel*/
         loginViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (!errorMessage.isNullOrEmpty()) {
-                Toast.makeText(context, "Error al iniciar sesión: $errorMessage", Toast.LENGTH_LONG).show()
+                showErrorDialog(errorMessage)
             }
         }
 
@@ -67,14 +68,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
-            /*Requisito: "validación de campos a sus pantallas para que no me deje iniciar un proceso si cualquiera de los campos está vacío"*/
+            /*Validación de campos con AlertDialog*/
             if (email.isEmpty()) {
-                emailEditText.error = "El correo no puede estar vacío"
+                showErrorDialog("El correo no puede estar vacío")
                 emailEditText.requestFocus()
                 return@setOnClickListener
             }
             if (password.isEmpty()) {
-                passwordEditText.error = "La contraseña no puede estar vacía"
+                showErrorDialog("La contraseña no puede estar vacía")
                 passwordEditText.requestFocus()
                 return@setOnClickListener
             }
@@ -84,9 +85,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         registerTextView.setOnClickListener {
-            /*Requisito: "Si un registro resulta exitoso se deberá mover al usuario a la pantalla de login."*/
-            /*Aquí se maneja la navegación desde Login a Register*/
+            /*Navegar a la pantalla de registro*/
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+    }
+
+    /*Función para mostrar AlertDialog de error con botón Aceptar*/
+    private fun showErrorDialog(message: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Error")
+        builder.setMessage(message)
+        builder.setCancelable(false)
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.create().show()
     }
 }

@@ -71,6 +71,10 @@ class PendingsAdapter(
         holder.btnEditTask.setOnClickListener {
             communicator.openUpdateTaskFragment(currentTask, userId)
         }
+
+        holder.itemView.setOnClickListener {
+            taskListener.onTaskClicked(currentTask)
+        }
     }
 
     override fun getItemCount() = taskList.size

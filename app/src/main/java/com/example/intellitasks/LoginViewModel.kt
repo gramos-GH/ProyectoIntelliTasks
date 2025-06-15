@@ -21,26 +21,39 @@ class LoginViewModel : ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
-    /*Requisito: "En cada viewModel deberán crear los publishers para el loader"*/
+    /*Publisher para mostrar/ocultar loader*/
     private val _showLoader = MutableLiveData<Boolean>()
     val showLoader: LiveData<Boolean> = _showLoader
 
     fun loginUser(email: String, password: String) {
-        /*Requisito: "crear los publishers para el loader"*/
-        _showLoader.value = true /*Mostrar loader antes de la operación de Firebase*/
+        _showLoader.value = true
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                _showLoader.value = false /*Ocultar loader después de la operación de Firebase*/
+                _showLoader.value = false
 
                 if (task.isSuccessful) {
                     Log.d("LoginViewModel", "Usuario logeado exitosamente.")
-                    _loginResult.value = true /*Publicar éxito en el login*/
+                    _loginResult.value = true
                 } else {
-                    val errorMessage = task.exception?.message ?: "Error desconocido al iniciar sesión."
-                    Log.w("LoginViewModel", "Fallo el inicio de sesión: $errorMessage", task.exception)
-                    _loginResult.value = false /*Publicar fallo en el login*/
-                    _error.value = errorMessage /*Publicar mensaje de error*/
+                    val firebaseMessage = task.exception?.message ?: "Error desconocido al iniciar sesión."
+                    Log.w("LoginViewModel", "Fallo el inicio de sesión: $firebaseMessage", task.exception)
+
+                    // Personalizar mensajes según contenido del error original
+                    val friendlyMessage = when {
+                        firebaseMessage.contains("badly formatted", ignoreCase = true) ->
+                            "El formato del correo electrónico es inválido."
+                        firebaseMessage.contains("password is invalid", ignoreCase = true) ||
+                                firebaseMessage.contains("wrong password", ignoreCase = true) ->
+                            "La contraseña es incorrecta."
+                        firebaseMessage.contains("no user record", ignoreCase = true) ||
+                                firebaseMessage.contains("user-not-found", ignoreCase = true) ->
+                            "No existe una cuenta con ese correo."
+                        else -> firebaseMessage
+                    }
+
+                    _loginResult.value = false
+                    _error.value = friendlyMessage
                 }
             }
     }

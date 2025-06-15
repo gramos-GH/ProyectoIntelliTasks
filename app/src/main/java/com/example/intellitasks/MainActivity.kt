@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth // Importar FirebaseAuth
 class MainActivity : AppCompatActivity(), FragmentCommunicator {
 
     private lateinit var navController: NavController
-    private lateinit var lottieLoaderView: LottieAnimationView // Cambiado el nombre para mayor claridad
+    private lateinit var lottieLoaderView: LottieAnimationView
 
     private var loaderRequestCount = 0
 
